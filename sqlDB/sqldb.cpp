@@ -31,9 +31,7 @@ private:
     unordered_map<string, any> data;
 
 public:
-    Record()
-    {
-    }
+    Record() {}
     Record(unordered_map<string, any> &info)
     {
         data = info;
@@ -109,22 +107,6 @@ public:
         }
         else
         {
-            // for (auto record : data)
-            // {
-            //     // record.second is the record
-            //     int flag = 0;
-            //     for (auto fields : criteria)
-            //     {
-            //         if (criteria[fields.first] != (record.second).getData()[fields.first])
-            //         {
-            //             flag = 1;
-            //             break;
-            //         }
-            //     }
-            //     if (flag == 0)
-            //         records.push_back(record.second);
-            // }
-
             for (auto &record : data)
             {
                 bool match = true;
@@ -174,9 +156,9 @@ public:
                             }
                             // Add other types if necessary
                         }
-                        catch (const std::bad_any_cast &)
+                        catch (...)
                         {
-                            match = false; // If any_cast fails, break the loop
+                            match = false;
                             break;
                         }
                     }
@@ -227,9 +209,12 @@ public:
     // vector<Record> getRecords(string tableName, unordered_map<string, string> query, unordered_set<string> fields = unordered_set<string>())
     // {
     // }
-    // bool saveRecords(string tableName, unordered_map<string, string> m)
-    // {
-    // }
+    bool saveRecords(string tableName, unordered_map<string, any> m)
+    {
+        if (tables.find(tableName) == tables.end())
+            return false;
+        return tables[tableName].addRecord(m);
+    }
     // bool deleteRecord(string tableName, string primaryId)
     // {
     // }
